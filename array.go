@@ -1,4 +1,4 @@
-package main
+package array
 
 import (
 	"errors"
@@ -90,22 +90,3 @@ func (a *Array) Every(checkFunction func(interface{}, int) bool) bool {
 
 	return true
 }
-
-// func main() {
-// 	items := []string{"ajah", "chuks"}
-// 	interfaceItems := make([]interface{}, len(items))
-
-// 	for i, v := range items {
-// 		interfaceItems[i] = v
-// 	}
-
-// 	a := New(interfaceItems)
-
-// 	fmt.Println("Length of array is", a.Length())
-
-// 	mapA := a.Map(func(value interface{}, index int) interface{} {
-// 		return value.(string) + "cute"
-// 	})
-
-// 	fmt.Println("map is", mapA)
-// }
