@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Array struct {
@@ -43,21 +42,70 @@ func New(items []interface{}) *Array {
 	return &newArray
 }
 
-func main() {
-	items := []string{"ajah", "chuks"}
-	interfaceItems := make([]interface{}, len(items))
+func (a *Array) Filter(filterFunction func(interface{}, int) bool) []interface{} {
+	newArray := make([]interface{}, a.Length())
+	counter := 0
 
-	for i, v := range items {
-		interfaceItems[i] = v
+	for index, value := range a.items {
+
+		if filterFunction(value, index) {
+			newArray[counter] = value
+			counter += 1
+		}
+
 	}
 
-	a := New(interfaceItems)
-
-	fmt.Println("Length of array is", a.Length())
-
-	mapA := a.Map(func(value interface{}, index int) interface{} {
-		return value.(string) + "cute"
-	})
-
-	fmt.Println("map is", mapA)
+	return newArray
 }
+
+func (a *Array) ForEach(function func(interface{}, int)) {
+
+	for index, value := range a.items {
+		function(value, index)
+	}
+}
+
+func (a *Array) Some(checkFunction func(interface{}, int) bool) bool {
+
+	for index, value := range a.items {
+
+		if checkFunction(value, index) {
+			return true
+		}
+
+	}
+
+	return false
+}
+
+func (a *Array) Every(checkFunction func(interface{}, int) bool) bool {
+
+	for index, value := range a.items {
+
+		if !checkFunction(value, index) {
+			return false
+		}
+
+	}
+
+	return true
+}
+
+// func main() {
+// 	items := []string{"ajah", "chuks"}
+// 	interfaceItems := make([]interface{}, len(items))
+
+// 	for i, v := range items {
+// 		interfaceItems[i] = v
+// 	}
+
+// 	a := New(interfaceItems)
+
+// 	fmt.Println("Length of array is", a.Length())
+
+// 	mapA := a.Map(func(value interface{}, index int) interface{} {
+// 		return value.(string) + "cute"
+// 	})
+
+// 	fmt.Println("map is", mapA)
+// }
