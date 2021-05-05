@@ -1,0 +1,63 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+type Array struct {
+	items []interface{}
+}
+
+func (a *Array) Get(index int) (interface{}, error) {
+	if index > len(a.items)-1 {
+		return nil, errors.New("index out of range error")
+	}
+
+	if index < 0 {
+		return nil, errors.New("index out of range error")
+	}
+
+	return a.items[index], nil
+
+}
+
+func (a *Array) Length() int {
+	return len(a.items)
+
+}
+
+func (a *Array) Map(mapFunction func(interface{}, int) interface{}) []interface{} {
+	newArray := make([]interface{}, a.Length())
+
+	for index, value := range a.items {
+		newValue := mapFunction(value, index)
+		newArray[index] = newValue
+	}
+
+	return newArray
+}
+
+func New(items []interface{}) *Array {
+	newArray := Array{items: items}
+	return &newArray
+}
+
+func main() {
+	items := []string{"ajah", "chuks"}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	fmt.Println("Length of array is", a.Length())
+
+	mapA := a.Map(func(value interface{}, index int) interface{} {
+		return value.(string) + "cute"
+	})
+
+	fmt.Println("map is", mapA)
+}
