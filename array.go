@@ -2,6 +2,7 @@ package array
 
 import (
 	"errors"
+	"fmt"
 )
 
 type Array struct {
@@ -241,4 +242,29 @@ func (a *Array) FindIndex(findFunction func(interface{}, int) bool) int {
 	}
 
 	return -1
+}
+
+func (a *Array) Includes(item interface{}) bool {
+
+	return a.IndexOf(item) > -1
+}
+
+func (a *Array) Join(joiner ...string) string {
+
+	returnString := ""
+	joinerString := ","
+
+	if len(joiner) > 0 {
+		joinerString = joiner[0]
+	}
+
+	for _, value := range a.items {
+		returnString += fmt.Sprintf("%v", value) + joinerString
+	}
+
+	if len(returnString) == 0 {
+		return returnString
+	}
+
+	return returnString[0 : len(returnString)-1]
 }

@@ -138,3 +138,61 @@ func TestFindIndex(t *testing.T) {
 	}
 
 }
+
+func TestIncludes(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	included := a.Includes(2)
+
+	if !included {
+		t.Log("Array should return true for value in array")
+		t.Log("Expected", true, "\n Got", included)
+		t.Fail()
+	}
+
+	included2 := a.Includes(30)
+
+	if included2 {
+		t.Log("Array should return false for value not in array")
+		t.Log("Expected", false, "\n Got", included2)
+		t.Fail()
+	}
+
+}
+
+func TestJoin(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	str := a.Join()
+	expectedValue := "23,24,2,5,10"
+
+	if str != expectedValue {
+		t.Log("Array should return string values of its contents")
+		t.Log("Expected", expectedValue, "\n Got", str)
+		t.Fail()
+	}
+
+	str2 := a.Join(":")
+	expectedValue2 := "23:24:2:5:10"
+
+	if str2 != expectedValue2 {
+		t.Log("Array should container joiner and return string values of its contents")
+		t.Log("Expected", expectedValue2, "\n Got", str2)
+		t.Fail()
+	}
+
+}
