@@ -229,3 +229,16 @@ func (a *Array) Find(findFunction func(interface{}, int) bool) interface{} {
 
 	return nil
 }
+
+func (a *Array) FindIndex(findFunction func(interface{}, int) bool) int {
+
+	for index, value := range a.items {
+
+		if findFunction(value, index) {
+			return index
+		}
+
+	}
+
+	return -1
+}

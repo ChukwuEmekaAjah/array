@@ -106,3 +106,35 @@ func TestFind(t *testing.T) {
 	}
 
 }
+
+func TestFindIndex(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	index := a.FindIndex(func(value interface{}, index int) bool {
+		return value.(int) > 20
+	})
+
+	if index != 0 {
+		t.Log("Array find index should return first index position that passes search criteria")
+		t.Log("Expected", 0, "\n Got", index)
+		t.Fail()
+	}
+
+	index2 := a.FindIndex(func(value interface{}, index int) bool {
+		return value.(int) > 30
+	})
+
+	if index2 != -1 {
+		t.Log("Array find should return nil when no value is found")
+		t.Log("Expected", -1, "\n Got", index2)
+		t.Fail()
+	}
+
+}
