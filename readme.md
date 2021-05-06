@@ -22,7 +22,7 @@ go get github.com/ChukwuEmekaAjah/array
     )
 
     func main() {
-        items := []string{23, 24, 2, 5, 10}
+        items := []int{23, 24, 2, 5, 10}
 	    interfaceItems := make([]interface{}, len(items))
 
         for i, v := range items {
