@@ -130,3 +130,89 @@ func (a *Array) UnShift(item interface{}) int {
 
 	return a.Length()
 }
+
+func (a *Array) IndexOf(item interface{}) int {
+
+	for i, v := range a.items {
+		if v == item {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func (a *Array) Concat(a2 *Array) *Array {
+
+	itemsList := make([]interface{}, a.Length()+a2.Length())
+
+	for i, v := range a.items {
+		itemsList[i] = v
+	}
+
+	for i, v := range a2.items {
+		itemsList[a.Length()-1+i] = v
+	}
+
+	a3 := New(itemsList)
+
+	return a3
+}
+
+func (a *Array) Slice(pos ...int) *Array {
+
+	if len(pos) == 0 {
+		return New(a.items)
+	}
+
+	if len(pos) == 1 {
+		if pos[0] < 0 || pos[0] > (a.Length()-1) {
+			return New(make([]interface{}, 0))
+		} else {
+			return New(a.items[pos[0]:])
+		}
+	}
+
+	if pos[0] < 0 || pos[0] > (a.Length()-1) {
+		return New(make([]interface{}, 0))
+	}
+
+	if pos[1] > a.Length() {
+		return New(a.items[pos[0]:])
+	} else {
+		return New(a.items[pos[0]:pos[1]])
+	}
+}
+
+func (a *Array) Fill(value interface{}, pos ...int) *Array {
+
+	if len(pos) == 0 {
+		return New(a.items)
+	}
+
+	if len(pos) == 1 {
+		if pos[0] < 0 || pos[0] > (a.Length()-1) {
+			return a
+		} else {
+			for counter := pos[0]; counter < a.Length(); counter++ {
+				a.items[counter] = value
+			}
+			return a
+		}
+	}
+
+	if pos[0] < 0 || pos[0] > (a.Length()-1) {
+		return a
+	}
+
+	upperBound := pos[1]
+
+	if a.Length() < upperBound {
+		upperBound = a.Length()
+	}
+
+	for counter := pos[0]; counter < upperBound; counter++ {
+		a.items[counter] = value
+	}
+	return a
+}
