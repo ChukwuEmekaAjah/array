@@ -216,3 +216,16 @@ func (a *Array) Fill(value interface{}, pos ...int) *Array {
 	}
 	return a
 }
+
+func (a *Array) Find(findFunction func(interface{}, int) bool) interface{} {
+
+	for index, value := range a.items {
+
+		if findFunction(value, index) {
+			return value
+		}
+
+	}
+
+	return nil
+}

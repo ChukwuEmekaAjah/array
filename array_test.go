@@ -72,3 +72,37 @@ func TestSlice(t *testing.T) {
 	}
 
 }
+
+func TestFind(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	value := a.Find(func(value interface{}, index int) bool {
+		return value.(int) > 20
+	})
+
+	firstItem, _ := a.Get(0)
+
+	if value != firstItem {
+		t.Log("Array find should return first value that passes search criteria")
+		t.Log("Expected", firstItem, "\n Got", value)
+		t.Fail()
+	}
+
+	value2 := a.Find(func(value interface{}, index int) bool {
+		return value.(int) > 30
+	})
+
+	if value2 != nil {
+		t.Log("Array find should return nil when no value is found")
+		t.Log("Expected", nil, "\n Got", value2)
+		t.Fail()
+	}
+
+}
