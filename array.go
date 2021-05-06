@@ -90,3 +90,43 @@ func (a *Array) Every(checkFunction func(interface{}, int) bool) bool {
 
 	return true
 }
+
+func (a *Array) Push(item interface{}) int {
+
+	a.items = append(a.items, item)
+
+	return a.Length()
+}
+
+func (a *Array) Pop() interface{} {
+
+	value := a.items[a.Length()-1]
+
+	a.items = a.items[0 : a.Length()-1]
+
+	return value
+}
+
+func (a *Array) Shift() interface{} {
+
+	value := a.items[0]
+
+	a.items = a.items[1:]
+
+	return value
+}
+
+func (a *Array) UnShift(item interface{}) int {
+
+	itemsList := make([]interface{}, a.Length()+1)
+
+	itemsList[0] = item
+
+	for i, v := range a.items {
+		itemsList[i+1] = v
+	}
+
+	a.items = itemsList
+
+	return a.Length()
+}
