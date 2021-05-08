@@ -40,11 +40,7 @@ go get github.com/ChukwuEmekaAjah/array
 
     func isEven(value interface{}, index int) bool {
 
-        if value.(int) % 2 {
-            return false
-        }
-
-        return true
+        return value.(int)%2 != 0
     }
 
     
