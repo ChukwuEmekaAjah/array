@@ -268,3 +268,8 @@ func (a *Array) Join(joiner ...string) string {
 
 	return returnString[0 : len(returnString)-1]
 }
+
+func (a *Array) String() string {
+
+	return fmt.Sprintf("Array %v", a.items)
+}

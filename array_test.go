@@ -196,3 +196,24 @@ func TestJoin(t *testing.T) {
 	}
 
 }
+
+func TestString(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	str := a.String()
+	expectedValue := "Array [23 24 2 5 10]"
+
+	if str != expectedValue {
+		t.Log("Array should return string values of its contents")
+		t.Log("Expected", expectedValue, "\n Got", str)
+		t.Fail()
+	}
+
+}
