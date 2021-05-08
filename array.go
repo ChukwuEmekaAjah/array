@@ -5,10 +5,18 @@ import (
 	"fmt"
 )
 
+// Array is a struct wrapper over slices to enable usage of methods indirectly on the slice
 type Array struct {
 	items []interface{}
 }
 
+// New creates a new array struct
+func New(items []interface{}) *Array {
+	newArray := Array{items: items}
+	return &newArray
+}
+
+// Get returns the array element at the specified index
 func (a *Array) Get(index int) (interface{}, error) {
 	if index > len(a.items)-1 {
 		return nil, errors.New("index out of range error")
@@ -22,11 +30,13 @@ func (a *Array) Get(index int) (interface{}, error) {
 
 }
 
+// Length returns the total number of elements in the array
 func (a *Array) Length() int {
 	return len(a.items)
 
 }
 
+// Map creates a new array from the return values of the map function
 func (a *Array) Map(mapFunction func(interface{}, int) interface{}) []interface{} {
 	newArray := make([]interface{}, a.Length())
 
@@ -38,13 +48,9 @@ func (a *Array) Map(mapFunction func(interface{}, int) interface{}) []interface{
 	return newArray
 }
 
-func New(items []interface{}) *Array {
-	newArray := Array{items: items}
-	return &newArray
-}
-
+// Filter creates a new array using the values that pass the filter function test
 func (a *Array) Filter(filterFunction func(interface{}, int) bool) []interface{} {
-	newArray := make([]interface{}, a.Length())
+	newArray := make([]interface{}, 0)
 	counter := 0
 
 	for index, value := range a.items {
@@ -59,6 +65,7 @@ func (a *Array) Filter(filterFunction func(interface{}, int) bool) []interface{}
 	return newArray
 }
 
+// ForEach executes a function for each element in the array
 func (a *Array) ForEach(function func(interface{}, int)) {
 
 	for index, value := range a.items {
@@ -66,6 +73,7 @@ func (a *Array) ForEach(function func(interface{}, int)) {
 	}
 }
 
+// Some returns true if any of the elements in the array returns true after being tested by the check function
 func (a *Array) Some(checkFunction func(interface{}, int) bool) bool {
 
 	for index, value := range a.items {
@@ -79,6 +87,7 @@ func (a *Array) Some(checkFunction func(interface{}, int) bool) bool {
 	return false
 }
 
+// Every returns true if all the elements in the array return true after being tested by the check function
 func (a *Array) Every(checkFunction func(interface{}, int) bool) bool {
 
 	for index, value := range a.items {
@@ -92,6 +101,7 @@ func (a *Array) Every(checkFunction func(interface{}, int) bool) bool {
 	return true
 }
 
+// Push adds a new element to the array and returns the new array length
 func (a *Array) Push(item interface{}) int {
 
 	a.items = append(a.items, item)
@@ -99,6 +109,7 @@ func (a *Array) Push(item interface{}) int {
 	return a.Length()
 }
 
+// Pop removes the last element in the array and returns it
 func (a *Array) Pop() interface{} {
 
 	value := a.items[a.Length()-1]
@@ -108,6 +119,7 @@ func (a *Array) Pop() interface{} {
 	return value
 }
 
+// Shift removes the first element in the array and returns it
 func (a *Array) Shift() interface{} {
 
 	value := a.items[0]
@@ -117,6 +129,7 @@ func (a *Array) Shift() interface{} {
 	return value
 }
 
+// Unshift adds an element to the beginning of the array
 func (a *Array) UnShift(item interface{}) int {
 
 	itemsList := make([]interface{}, a.Length()+1)
@@ -132,6 +145,7 @@ func (a *Array) UnShift(item interface{}) int {
 	return a.Length()
 }
 
+// IndexOf returns the index of the first appearance of an element in the array
 func (a *Array) IndexOf(item interface{}) int {
 
 	for i, v := range a.items {
@@ -143,6 +157,7 @@ func (a *Array) IndexOf(item interface{}) int {
 	return -1
 }
 
+// Concat combines multiple arrays and returns a new array
 func (a *Array) Concat(a2 *Array) *Array {
 
 	itemsList := make([]interface{}, a.Length()+a2.Length())
@@ -160,6 +175,7 @@ func (a *Array) Concat(a2 *Array) *Array {
 	return a3
 }
 
+// Slice returns a new array with elements within the slice range
 func (a *Array) Slice(pos ...int) *Array {
 
 	if len(pos) == 0 {
@@ -185,6 +201,7 @@ func (a *Array) Slice(pos ...int) *Array {
 	}
 }
 
+// Fill replaces the values in the array within the specified positiosn with the provided value
 func (a *Array) Fill(value interface{}, pos ...int) *Array {
 
 	if len(pos) == 0 {
@@ -218,6 +235,7 @@ func (a *Array) Fill(value interface{}, pos ...int) *Array {
 	return a
 }
 
+// Find returns the first element that passes find function test
 func (a *Array) Find(findFunction func(interface{}, int) bool) interface{} {
 
 	for index, value := range a.items {
@@ -231,6 +249,7 @@ func (a *Array) Find(findFunction func(interface{}, int) bool) interface{} {
 	return nil
 }
 
+// Find returns the index of the first element that pass the find function test
 func (a *Array) FindIndex(findFunction func(interface{}, int) bool) int {
 
 	for index, value := range a.items {
@@ -244,6 +263,7 @@ func (a *Array) FindIndex(findFunction func(interface{}, int) bool) int {
 	return -1
 }
 
+// Includes returns true if the array has an element with the specified item value
 func (a *Array) Includes(item interface{}) bool {
 
 	return a.IndexOf(item) > -1
@@ -269,7 +289,14 @@ func (a *Array) Join(joiner ...string) string {
 	return returnString[0 : len(returnString)-1]
 }
 
+// String returns the string representation of the array
 func (a *Array) String() string {
 
 	return fmt.Sprintf("Array %v", a.items)
+}
+
+// Values returns the underlying array slice
+func (a *Array) Values() []interface{} {
+
+	return a.items
 }
