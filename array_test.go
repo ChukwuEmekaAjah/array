@@ -217,3 +217,20 @@ func TestString(t *testing.T) {
 	}
 
 }
+
+func TestLength(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+
+	for i, v := range items {
+		interfaceItems[i] = v
+	}
+
+	a := New(interfaceItems)
+
+	if len(items) != a.Length() {
+		t.Log("Array should have same length as origin slice")
+		t.Log("Expected", len(items), "\n Got", a.Length())
+		t.Fail()
+	}
+}
