@@ -37,7 +37,7 @@ func (a *Array) Length() int {
 }
 
 // Map creates a new array from the return values of the map function
-func (a *Array) Map(mapFunction func(interface{}, int) interface{}) []interface{} {
+func (a *Array) Map(mapFunction func(interface{}, int) interface{}) *Array {
 	newArray := make([]interface{}, a.Length())
 
 	for index, value := range a.items {
@@ -45,24 +45,22 @@ func (a *Array) Map(mapFunction func(interface{}, int) interface{}) []interface{
 		newArray[index] = newValue
 	}
 
-	return newArray
+	return New(newArray)
 }
 
 // Filter creates a new array using the values that pass the filter function test
-func (a *Array) Filter(filterFunction func(interface{}, int) bool) []interface{} {
+func (a *Array) Filter(filterFunction func(interface{}, int) bool) *Array {
 	newArray := make([]interface{}, 0)
-	counter := 0
 
 	for index, value := range a.items {
 
 		if filterFunction(value, index) {
-			newArray[counter] = value
-			counter += 1
+			newArray = append(newArray, value)
 		}
 
 	}
 
-	return newArray
+	return New(newArray)
 }
 
 // ForEach executes a function for each element in the array
@@ -205,7 +203,7 @@ func (a *Array) Slice(pos ...int) *Array {
 func (a *Array) Fill(value interface{}, pos ...int) *Array {
 
 	if len(pos) == 0 {
-		return New(a.items)
+		return a
 	}
 
 	if len(pos) == 1 {
