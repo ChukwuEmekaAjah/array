@@ -71,6 +71,14 @@ func TestSlice(t *testing.T) {
 		t.Fail()
 	}
 
+	g := a.Slice(0, 29)
+
+	if g.Length() != len(items) {
+		t.Log("Array slice should have same length as source when upper bound greater than array length")
+		t.Log("Expected", len(items), "\n Got", g.Length())
+		t.Fail()
+	}
+
 }
 
 func TestFind(t *testing.T) {
@@ -192,6 +200,15 @@ func TestJoin(t *testing.T) {
 	if str2 != expectedValue2 {
 		t.Log("Array should container joiner and return string values of its contents")
 		t.Log("Expected", expectedValue2, "\n Got", str2)
+		t.Fail()
+	}
+
+	b := New(make([]interface{}, 0))
+	str = b.Join()
+
+	if str != "" {
+		t.Log("Array.Join should return empty string when the array is empty")
+		t.Log("Expected", "", "\n Got", str)
 		t.Fail()
 	}
 
@@ -357,6 +374,10 @@ func TestSome(t *testing.T) {
 
 }
 
+func isPositive(value interface{}, index int) bool {
+	return value.(int) > 0
+}
+
 func TestEvery(t *testing.T) {
 	items := []int{23, 24, 2, 5, 10}
 	interfaceItems := make([]interface{}, len(items))
@@ -371,6 +392,14 @@ func TestEvery(t *testing.T) {
 
 	if allAreEven {
 		t.Log("Every item in the array is not even")
+		t.Log("Expected", false, "\n Got", true)
+		t.Fail()
+	}
+
+	allAreEven = a.Every(isPositive)
+
+	if !allAreEven {
+		t.Log("Every item in the array should be positive")
 		t.Log("Expected", true, "\n Got", false)
 		t.Fail()
 	}
@@ -625,6 +654,33 @@ func TestValues(t *testing.T) {
 			t.Log("Expected", items[i], "\n Got", c[i])
 			t.Fail()
 		}
+	}
+
+}
+
+var sum int = 0
+
+func forEach(value interface{}, index int) {
+	sum += value.(int)
+}
+
+func TestForEach(t *testing.T) {
+	items := []int{23, 24, 2, 5, 10}
+	interfaceItems := make([]interface{}, len(items))
+	itemsSum := 0
+	for i, v := range items {
+		interfaceItems[i] = v
+		itemsSum += v
+	}
+
+	a := New(interfaceItems)
+
+	a.ForEach(forEach)
+
+	if sum != itemsSum {
+		t.Log("ForEach should execute function on each item of the array")
+		t.Log("Expected", itemsSum, "\n Got", sum)
+		t.Fail()
 	}
 
 }
